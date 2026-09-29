@@ -16,6 +16,7 @@ engine = create_engine(db_url)
 Base = declarative_base()
 
 
+
 class UserRole(enum.Enum):
     patient = "patient"
     guardian = "guardian"
