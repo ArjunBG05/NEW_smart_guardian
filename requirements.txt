@@ -7,3 +7,9 @@ scikit-learn
 numpy
 joblib
 requests
+passlib[argon2]
+dotenv 
+os
+datetime 
+jose 
+typing 
