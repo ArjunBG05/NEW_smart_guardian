@@ -6,6 +6,8 @@ import '../utils/validators.dart';
 import 'patient_home_screen.dart';
 import 'guardian_home_screen.dart';
 import 'help_screen.dart';
+import 'forgot_password_screen.dart'; // NEW
+import 'register_screen.dart'; // NEW
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,12 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //===Real Time Based Greeting method====
   String _greeting() {
-  final hour = DateTime.now().hour;
-  if (hour >= 5 && hour < 12) return 'Good Morning';
-  if (hour >= 12 && hour < 17) return 'Good Afternoon';
-  if (hour >= 17 && hour < 21) return 'Good Evening';
-  return 'Good Night';
-}
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 12) return 'Good Morning';
+    if (hour >= 12 && hour < 17) return 'Good Afternoon';
+    if (hour >= 17 && hour < 21) return 'Good Evening';
+    return 'Good Night';
+  }
 
   Future<void> _handleLogin(AuthProvider auth) async {
     if (!_formKey.currentState!.validate()) return;
@@ -65,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = context.watch<AuthProvider>();
 
     return Scaffold(
-      // --- AppBar added here so the help button has somewhere to live ---
       appBar: AppBar(
         title: const Text('Smart Guardian'),
         centerTitle: false,
@@ -101,10 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: const Color.fromARGB(255, 23, 71, 175),
                           fontWeight: FontWeight.w600,
-                          ),
+                        ),
                   ),
                   const SizedBox(height: 4),
-                  
 
                   Text(
                     'Smart Guardian',
@@ -113,22 +113,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         .textTheme
                         .headlineMedium
                         ?.copyWith(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold
-                          ),
+                            color: Colors.green, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Sign in to continue',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: const Color.fromARGB(255, 117, 117, 117)),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: const Color.fromARGB(255, 117, 117, 117)),
                   ),
                   const SizedBox(height: 32),
 
-                  // --- Role selector: asks which role BEFORE/WHILE logging in ---
+                  // --- Role selector ---
                   Text('I am logging in as',
                       style: Theme.of(context).textTheme.labelLarge),
                   const SizedBox(height: 8),
@@ -146,7 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                     selected: {auth.selectedRole},
-                    onSelectionChanged: (selection) => auth.setRole(selection.first),
+                    onSelectionChanged: (selection) =>
+                        auth.setRole(selection.first),
                   ),
                   const SizedBox(height: 28),
 
@@ -175,25 +172,60 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: Icon(_obscurePassword
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined),
-                        onPressed: () =>
-                            setState(() => _obscurePassword = !_obscurePassword),
+                        onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword),
                       ),
                     ),
                     validator: Validators.password,
                   ),
-                  const SizedBox(height: 28),
+
+                  // --- NEW: Forgot password ---
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ForgotPasswordScreen(
+                            initialEmail: _emailController.text.trim(),
+                          ),
+                        ),
+                      ),
+                      child: const Text('Forgot password?'),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
 
                   // --- Login button ---
                   FilledButton(
                     onPressed: auth.isLoading ? null : () => _handleLogin(auth),
-                    style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
+                    style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14)),
                     child: auth.isLoading
                         ? const SizedBox(
                             height: 20,
                             width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white),
                           )
                         : Text('Log in as ${auth.selectedRole.label}'),
+                  ),
+
+                  // --- NEW: Create account ---
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      TextButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const RegisterScreen()),
+                        ),
+                        child: const Text('Create account'),
+                      ),
+                    ],
                   ),
                 ],
               ),

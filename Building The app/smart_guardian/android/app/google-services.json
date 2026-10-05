@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "924995547402",
+    "project_id": "smart-guardian-by-arjun",
+    "storage_bucket": "smart-guardian-by-arjun.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924995547402:android:816174b145fd4b004f4af3",
+        "android_client_info": {
+          "package_name": "com.example.smart_guardian"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtHUaK-lh7k8k_ldiLs8jy8ZqqPClW9CY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
